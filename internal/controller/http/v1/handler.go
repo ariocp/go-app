@@ -1,12 +1,10 @@
 package v1
 
 import (
-	error2 "github.com/ariocp/go-app/pkg/responce"
-	"net/http"
-
-	"github.com/ariocp/go-app/internal/users/entities"
-	"github.com/ariocp/go-app/internal/users/service"
+	"github.com/ariocp/go-app/internal/models"
+	"github.com/ariocp/go-app/internal/service"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type Handler struct {
@@ -17,17 +15,17 @@ func NewHandler(services *service.Service) *Handler {
 	return &Handler{services: services}
 }
 
-func (h *Handler) SignUp(c *gin.Context) {
-	var inp entities.User
+func (h *Handler) signUp(c *gin.Context) {
+	var inp models.User
 
 	if err := c.BindJSON(&inp); err != nil {
-		error2.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
 	id, err := h.services.Authorization.CreateUser(inp)
 	if err != nil {
-		error2.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -41,17 +39,17 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (h *Handler) SignIn(c *gin.Context) {
+func (h *Handler) signIn(c *gin.Context) {
 	var inp signInInput
 
 	if err := c.BindJSON(&inp); err != nil {
-		error2.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	token, err := h.services.Authorization.GenerateToken(inp.Username, inp.Password)
 	if err != nil {
-		error2.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 

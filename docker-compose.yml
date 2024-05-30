@@ -8,13 +8,13 @@ services:
     depends_on:
       - db
     environment:
-      - DB_PWD=qwerty
+      - DB_PASSWORD=pMfdF8MvPAq2nVjDjb1ugMhzmnCHFsu1
 
   db:
     restart: always
     image: postgres:latest
     volumes:
-    - ./.postgres/postgres/data:/var/lib/postgresql/data
+      - ./.postgres/postgres/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=qwerty
     ports:

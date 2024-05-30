@@ -3,12 +3,11 @@ package service
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/ariocp/go-app/internal/models"
+	"github.com/ariocp/go-app/internal/repository"
+	"github.com/dgrijalva/jwt-go"
 	"os"
 	"time"
-
-	"github.com/ariocp/go-app/internal/users/entities"
-	"github.com/ariocp/go-app/internal/users/repository"
-	"github.com/dgrijalva/jwt-go"
 )
 
 const tokenTTL = 12 * time.Hour
@@ -31,7 +30,7 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 	return &AuthService{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user entities.User) (int, error) {
+func (s *AuthService) CreateUser(user models.User) (int64, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
 }
@@ -39,7 +38,7 @@ func (s *AuthService) CreateUser(user entities.User) (int, error) {
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
-		return " ", err
+		return "", err
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
@@ -47,7 +46,7 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
-		user.ID,
+		user.Id,
 	})
 
 	return token.SignedString([]byte(signingKey))

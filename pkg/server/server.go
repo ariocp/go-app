@@ -2,44 +2,44 @@ package server
 
 import (
 	"context"
+	"github.com/ariocp/go-app/config"
 	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
-
-	"github.com/ariocp/go-app/config"
-	"github.com/sirupsen/logrus"
+	"time"
 )
 
 type Server struct {
-	*http.Server
+	httpServer *http.Server
 }
 
 func NewServer(cfg config.Config, handler http.Handler) *Server {
-	httpServer := &http.Server{
-		Addr:    cfg.Server.Host + ":" + cfg.Server.Port,
-		Handler: handler,
-	}
-	return &Server{httpServer}
+	return &Server{httpServer: &http.Server{
+		Addr:              cfg.Server.Host + ":" + cfg.Server.Port,
+		Handler:           handler,
+		ReadHeaderTimeout: 10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		MaxHeaderBytes:    1 << 20,
+	}}
 }
 
-func (s *Server) Run() error {
+func (s *Server) Start() error {
 	go func() {
-		if err := s.ListenAndServe(); err != nil {
-			return
+		if err := s.httpServer.ListenAndServe(); err != nil {
+			panic(err)
 		}
 	}()
 
-	logrus.Info()
-
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(quit, os.Interrupt)
 	<-quit
 
-	logrus.Info()
+	return s.Shutdown()
+}
 
-	if err := s.Shutdown(context.Background()); err != nil {
-		return err
-	}
-	return nil
+func (s *Server) Shutdown() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	return s.httpServer.Shutdown(ctx)
 }

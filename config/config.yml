@@ -3,8 +3,8 @@ server:
   port: "8000"
 
 database:
-  host: localhost
+  host: balarama.db.elephantsql.com
   port: "5432"
-  username: postgres
-  dbname: postgres
+  username: zescnmxq
+  dbname: zescnmxq
   sslmode: disable

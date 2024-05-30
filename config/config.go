@@ -5,34 +5,30 @@ import (
 	"github.com/subosito/gotenv"
 )
 
-type (
-	Config struct {
-		Server   ServerConfig
-		Database DatabaseConfig
-	}
+type Config struct {
+	Server   ServerConfig
+	Database DatabaseConfig
+}
 
-	ServerConfig struct {
-		Host string
-		Port string
-	}
+type ServerConfig struct {
+	Host string
+	Port string
+}
 
-	DatabaseConfig struct {
-		Host     string
-		Port     string
-		Username string
-		Password string
-		DBName   string
-		SSLMode  string
-	}
-)
+type DatabaseConfig struct {
+	Host     string
+	Port     string
+	Username string
+	Password string
+	DBName   string
+	SSLMode  string
+}
 
 func LoadConfig() (Config, error) {
-	v := viper.New()
+	viper.SetConfigName("config")
+	viper.AddConfigPath("config")
 
-	v.SetConfigName("config")
-	v.AddConfigPath("config")
-
-	if err := v.ReadInConfig(); err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		return Config{}, err
 	}
 
@@ -40,11 +36,11 @@ func LoadConfig() (Config, error) {
 		return Config{}, err
 	}
 
-	var c Config
+	var config Config
 
-	if err := v.Unmarshal(&c); err != nil {
+	if err := viper.Unmarshal(&config); err != nil {
 		return Config{}, err
 	}
 
-	return c, nil
+	return config, nil
 }
