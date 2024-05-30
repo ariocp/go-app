@@ -1,3 +1,0 @@
-migrate -path ./migrations -database postgres://zescnmxq:pMfdF8MvPAq2nVjDjb1ugMhzmnCHFsu1@balarama.db.elephantsql.com:5432/zescnmxq?sslmode=disable up
-migrate -path ./migrations -database postgres://zescnmxq:pMfdF8MvPAq2nVjDjb1ugMhzmnCHFsu1@balarama.db.elephantsql.com:5432/zescnmxq?sslmode=disable force 000001
-migrate -path ./migrations -database postgres://zescnmxq:pMfdF8MvPAq2nVjDjb1ugMhzmnCHFsu1@balarama.db.elephantsql.com:5432/zescnmxq?sslmode=disable down
