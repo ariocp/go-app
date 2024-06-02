@@ -4,8 +4,11 @@ build:
 run:
 	docker-compose build go-app
 
-migrate:
+up:
 	migrate -path ./migrations -database postgres://postgres:qwerty@localhost:5432?sslmode=disable up
+
+down:
+	migrate -path ./migrations -database postgres://postgres:qwerty@localhost:5432?sslmode=disable down
 
 swag:
 	swag init -g cmd/app/main.go

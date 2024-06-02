@@ -2,11 +2,14 @@ basePath: /
 definitions:
   models.User:
     properties:
+      email:
+        type: string
       password:
         type: string
       username:
         type: string
     required:
+    - email
     - password
     - username
     type: object
@@ -14,6 +17,16 @@ definitions:
     properties:
       message:
         type: string
+    type: object
+  v1.confirmInput:
+    properties:
+      code:
+        type: string
+      username:
+        type: string
+    required:
+    - code
+    - username
     type: object
   v1.signInInput:
     properties:
@@ -31,6 +44,41 @@ info:
   title: go app API
   version: "1.0"
 paths:
+  /auth/confirm:
+    post:
+      consumes:
+      - application/json
+      description: confirm email
+      operationId: confirm-email
+      parameters:
+      - description: account created
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.confirmInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: confirm
+      tags:
+      - auth
   /auth/sign-in:
     post:
       consumes:
