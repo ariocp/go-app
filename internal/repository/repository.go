@@ -1,14 +1,8 @@
 package repository
 
-import (
-	"github.com/jmoiron/sqlx"
-)
+import "github.com/jmoiron/sqlx"
 
-<<<<<<< HEAD
 type UserRepository struct {
-=======
-type Repository struct {
->>>>>>> 39260269a65d547ef035ec84c6d4c737c0756251
 	Authorization
 }
 
