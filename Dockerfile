@@ -1,12 +1,12 @@
 FROM golang:latest
 
-WORKDIR /app
+WORKDIR ./cmd/app
 
 COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY ./ ./
 
 RUN go build -o go-app ./cmd/app/main.go
 

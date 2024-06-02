@@ -5,9 +5,8 @@ import (
 	"github.com/ariocp/go-app/internal/app"
 )
 
-// @title go app API
+// @title go app
 // @version 1.0
-// Description rest api
 
 // @host localhost:8000
 // @BasePath /

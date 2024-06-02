@@ -81,38 +81,3 @@ func (h *Handler) signIn(c *gin.Context) {
 		"token": token,
 	})
 }
-
-type confirmInput struct {
-	Username string `json:"username" binding:"required"`
-	Code     string `json:"code" binding:"required"`
-}
-
-// @Summary confirm
-// @Tags auth
-// @Description confirm email
-// @ID confirm-email
-// @Accept  json
-// @Produce  json
-// @Param   input  body  confirmInput  true  "account created"
-// @Success 200 {integer} string "token"
-// @Failure 400,404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /auth/confirm [post]
-func (h *Handler) confirm(c *gin.Context) {
-	var input confirmInput
-
-	if err := c.BindJSON(&input); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid input body")
-		return
-	}
-
-	err := h.services.Authorization.ConfirmUser(input.Username, input.Code)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"result": "confirmed",
-	})
-}

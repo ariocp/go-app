@@ -11,10 +11,9 @@ import (
 )
 
 func Run(cfg config.Config) {
-	dbConfig := cfg.Database
-	dbConfig.Password = os.Getenv("DB_PWD")
+	cfg.Database.Password = os.Getenv("DB_PASSWORD")
 
-	db, err := database.NewPostgresDB(dbConfig)
+	db, err := database.NewPostgresDB(cfg.Database)
 	if err != nil {
 		panic(err)
 	}

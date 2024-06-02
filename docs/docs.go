@@ -179,14 +179,10 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "required": [
-                "email",
                 "password",
                 "username"
             ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
@@ -249,7 +245,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8000",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "go app API",
+	Title:            "go app",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

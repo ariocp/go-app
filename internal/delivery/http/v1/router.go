@@ -16,8 +16,8 @@ func (h *Handler) Routes() *gin.Engine {
 	{
 		auth.POST("/sign-up", h.signUp)
 		auth.POST("/sign-in", h.signIn)
-		auth.POST("/confirm", h.confirm)
+		
 	}
-
+	
 	return router
 }

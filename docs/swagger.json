@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "go app API",
+        "title": "go app",
         "contact": {},
         "version": "1.0"
     },
@@ -172,14 +172,10 @@
         "models.User": {
             "type": "object",
             "required": [
-                "email",
                 "password",
                 "username"
             ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
